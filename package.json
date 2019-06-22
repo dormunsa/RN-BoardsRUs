@@ -8,14 +8,33 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "babel-eslint": "^10.0.1",
     "expo": "^33.0.0",
+    "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-dom": "^16.8.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
-    "react-native-web": "^0.11.4"
+    "react-native-elements": "^1.1.0",
+    "react-native-image-view": "^2.1.5",
+    "react-native-slick": "^1.0.2",
+    "react-native-slideshow": "^1.0.1",
+    "react-native-web": "^0.11.4",
+    "react-navigation": "^3.11.0",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.1.1"
+    "babel-preset-expo": "^5.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-config-react-native": "^4.0.0",
+    "eslint-plugin-jest": "^22.6.4",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.13.0",
+    "eslint-plugin-react-native": "^3.7.0",
+    "prettier": "^1.18.2"
   },
   "private": true
 }
