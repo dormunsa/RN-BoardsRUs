@@ -43,12 +43,15 @@ export default class BoardsList extends Component {
       >
         <Card containerStyle={styles.cardStyle}>
           <View style={styles.listItemContainer}>
+          <Text style = {styles.brandText}>Brand: {item.brand} {"\n"}<Text>Name: {item.name}</Text>
+          </Text>
+       
             <Image
               source={{ uri: item.imageSource }}
               style={styles.listImageItem}
             />
-            <Text style = {styles.nameText}>Name: {item.name}</Text>
-            <Text style = {styles.brandText}>Brand: {item.brand}</Text>
+          
+           
           </View>
         </Card>
       </TouchableOpacity>
@@ -69,7 +72,6 @@ BoardsList.propTypes = {
 const styles = StyleSheet.create({
   image: {
     justifyContent: "flex-start",
-    alignItems: "center",
     height: 150
   },
   listImageItem: {
@@ -78,8 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   listItemContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
+    flexDirection: "row",
   },
   backGround: {
     backgroundColor: "#000"
@@ -89,15 +90,17 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(38,38,38,0.7)",
   },
   brandText:{
-    fontSize: 16,
+    fontSize: 20,
     color: "#fff",
-    textAlign: "center",
-    fontFamily: 'Roboto'
+    textAlign: "right",
+    fontFamily: 'Roboto',
+    marginTop:25,
+    position:"absolute",
+    right:1
   },
   nameText : {
-    fontSize: 14,
+    fontSize: 18,
     color: "#fff",
-    textAlign: "center",
     fontFamily: 'Roboto'
   }
 });

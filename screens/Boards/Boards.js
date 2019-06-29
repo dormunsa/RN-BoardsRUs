@@ -26,15 +26,16 @@ export  class Boards extends Component {
   static navigationOptions = () => ({
     title: "Search Board",
     headerTitleStyle: {
-      fontSize: 28,
+      fontSize: 26,
       color: "#fff",
       textAlign: "center",
-      flex: 1
+      flex: 1,
+      fontFamily: 'Roboto'
     },
     headerTintColor: "#fff",
     headerStyle: {
       height: 40,
-      backgroundColor: "#262626"
+      backgroundColor: "#0f0821"
     }
   });
 
@@ -84,6 +85,11 @@ export  class Boards extends Component {
             boardsList: data,
             isLoading: false
           });
+        } else {
+          this.setState({
+            boardsList: [],
+            isLoading: false
+          });
         }
       });
   }
@@ -92,11 +98,11 @@ export  class Boards extends Component {
   render() {
     const {  isLoading, boardsList } = this.state;
     return (
-      <View>
+      <View style = {{backgroundColor : "#050407" , height : "100%"}}>
         <SearchInput handleSearch={this.handleSearch} />
         {isLoading == true ? (
           <View style={[styles.container, styles.horizontal]}>
-            <ActivityIndicator size="large" color="#000" />
+            <ActivityIndicator size="large" color="#fff" />
           </View>
         ) : (
           <View>
@@ -127,7 +133,9 @@ const styles = StyleSheet.create({
   notFound: {
     marginTop: 300,
     fontSize: 25,
-    textAlign: "center"
+    textAlign: "center",
+    color: "#fff",
+    
   },
   container: {
     flex: 1,

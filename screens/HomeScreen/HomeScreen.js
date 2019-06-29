@@ -20,10 +20,11 @@ export class HomeScreen extends Component {
   static navigationOptions = () => ({
     title: "Home Screen",
     headerTitleStyle: {
-      fontSize: 28,
+      fontSize: 26,
       color: "#fff",
       textAlign: "center",
-      flex: 1
+      flex: 1,
+      fontFamily: 'Roboto'
     },
     headerStyle: {
       height: 40,
