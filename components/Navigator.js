@@ -20,7 +20,7 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   } else if (routeName === 'Profile') {
     iconName = `ios-person${focused ? '' : ''}`;
   }
-  else if (routeName === 'Boards') {
+  else if (routeName === 'Search') {
     iconName = `md-search${focused ? '' : ''}`;
   }
   else if (routeName === 'Favorites') {
@@ -53,7 +53,7 @@ export default createAppContainer(
     {
       Profile: { screen: ProfileStack },
       Home: { screen: HomeStack },
-      Boards: { screen: BoardsStack },
+      Search: { screen: BoardsStack },
       Favorites: { screen: FavoritesStack },
     },
     {

@@ -1,20 +1,18 @@
 import React, { Component } from "react";
-import { Text, View, ActivityIndicator , StyleSheet } from "react-native";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as HomeScreenActions from "./HomeScreenActions";
+import { Text, View, ActivityIndicator , StyleSheet , ScrollView} from "react-native";
 import Slideshow from 'react-native-slideshow';
+import PropTypes from 'prop-types';
 
 
 export class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.getTopPicks = this.getTopPicks.bind(this);
+    console.log(this.props.screenProps.user);
     this.getTopGifs = this.getTopGifs.bind(this);
     this.addGifs = this.addGifs.bind(this);
     this.state = {
       isLoading: true,
-      topPicks: [],
+      topPicks: this.props.screenProps.user.topPicks,
       Gifs: []
     };
   }
@@ -27,7 +25,6 @@ export class HomeScreen extends Component {
       textAlign: "center",
       flex: 1
     },
-    headerTintColor: "#210144",
     headerStyle: {
       height: 40,
       backgroundColor: "#0f0821"
@@ -35,31 +32,11 @@ export class HomeScreen extends Component {
   });
 
   componentDidMount() {
-    this.getTopPicks("dmun1009@gmail.com");
     this.getTopGifs();
   }
-
-  async getTopPicks(userMail) {
-    const url = "https://boards-r-us-mm.herokuapp.com/getUserByEmail/";
-    await fetch(`${url}${userMail}`)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Something went wrong ...");
-        }
-      })
-      .then(async data => {
-        if (data.length > 0) {
-          this.setState({
-            topPicks: data[0].topPicks,
-            isLoading: false
-          });
-        }
-      });
-  }
+ 
   async getTopGifs() {
-    const url = "https://boards-r-us-mm.herokuapp.com/getTopGIFs";
+    const url = "https://boards-r-us-rn.herokuapp.com/getTopGIFs";
     await fetch(`${url}`)
       .then(response => {
         if (response.ok) {
@@ -84,29 +61,40 @@ export class HomeScreen extends Component {
             id: id,
             userId: userId
           }
-        ]
+        ],
+        isLoading: false
       }));
     } else {
       this.setState({
-        Gifs: allGifs
+        Gifs: allGifs,
+        isLoading: false
       });
     }
   }
   
   render() {
-    console.log(this.state);
-    let dataSourceInput = []
-    if(this.state.topPicks){
+    const { isLoading, topPicks, Gifs } = this.state;
+    let topPicksSourceInput = []
+    let GifsSourceInput = []
+    if(this.state.topPicks.length > 0){
       this.state.topPicks.forEach((item) => {
         let node  = {
           url : item.imageSource,
           title: item.name,
           caption :item.brand
         };
-        dataSourceInput.push(node)
+        topPicksSourceInput.push(node)
     })
     }
-    const { isLoading, topPicks } = this.state;
+    if(this.state.Gifs){
+      this.state.Gifs.forEach((item) => {
+        let node  = {
+          url : item.fileSource,
+        };
+        GifsSourceInput.push(node)
+    })
+    }
+  
    
     return (
       <View style = {{backgroundColor : "#050407" , height : "100%"}}>
@@ -116,13 +104,13 @@ export class HomeScreen extends Component {
           </View>
           
         ) : (
-         
+         <ScrollView>
           <View>
             {topPicks ? (
               <View >
               <Text style = {styles.TopPicks}>Top Picks For You</Text>
               <Slideshow 
-              dataSource={dataSourceInput}
+              dataSource={topPicksSourceInput}
                 height= {400}
                 overlay = {true}
                 containerStyle = {
@@ -133,12 +121,35 @@ export class HomeScreen extends Component {
             ) : (
               <Text>There is Top Picks Boards</Text>
             )}
+            {Gifs ? (
+              <View >
+              <Text style = {styles.TopPicks}>Top Gifs</Text>
+              <Slideshow 
+              dataSource={GifsSourceInput}
+                height= {400}
+                overlay = {true}
+                containerStyle = {
+                  { marginTop:20 , marginBottom : 10}
+                }      
+                />
+              </View>
+            ) : (
+              <Text>There is no Gifs</Text>
+            )}
           </View>
+        </ScrollView>
         )}
       </View>
+      
     );
   }
 }
+HomeScreen.propTypes = {
+  screenProps: PropTypes.shape({
+    user: PropTypes.isRequired,
+  }).isRequired,
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -153,32 +164,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "#fff",
     textAlign: "center",
-    marginTop:10
+    marginTop:10,
+    fontFamily: 'Roboto'
   }
 })
 
 
-const mapStateToProps = ({ HomeScreen }) => {
-  console.log("map state");
 
-  return {
-    isLoading: HomeScreen.isLoading
-  };
-};
 
-function mapDispatchToProps(dispatch) {
-  console.log("map dispatch");
-  return {
-    HomeScreenActions: bindActionCreators(
-      {
-        HomeScreenActions
-      },
-      dispatch
-    )
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HomeScreen);
+export default HomeScreen
