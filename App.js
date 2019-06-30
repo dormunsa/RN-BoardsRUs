@@ -13,11 +13,9 @@ export default class App extends React.Component {
       user: {}
     };
   }
-  
+
   async getUserByMail(userMail, userName) {
-    console.log("insideGetUser");
-    console.log(userMail);
-    console.log(userName);
+
     const url = "https://boards-r-us-rn.herokuapp.com/getUserByEmail/";
     await fetch(`${url}${userMail}`)
       .then(response => {
@@ -28,7 +26,6 @@ export default class App extends React.Component {
         }
       })
       .then(async data => {
-        console.log(data);
         if (data.length == 0) {
           this.addUser(userMail, userName);
         } else {

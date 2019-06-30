@@ -13,10 +13,11 @@ import { NavigationEvents } from "react-navigation";
 export class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.screenProps);
     this.getTopGifs = this.getTopGifs.bind(this);
     this.addGifs = this.addGifs.bind(this);
+    this.getUserByMail = this.getUserByMail.bind(this);
     this.state = {
+      isFirstLoad: true,
       isLoading: true,
       topPicks: this.props.screenProps.user.topPicks,
       Gifs: []
@@ -34,12 +35,32 @@ export class HomeScreen extends Component {
     },
     headerStyle: {
       height: 40,
-      backgroundColor: "#0f0821"
+      backgroundColor: "#0f0821",
+      fontFamily: "Roboto"
     }
   });
 
   componentDidMount() {
     this.getTopGifs();
+  }
+  async getUserByMail() {
+    const url = "https://boards-r-us-rn.herokuapp.com/getUserByEmail/";
+    await fetch(`${url}${this.props.screenProps.user.email}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Something went wrong ...");
+        }
+      })
+      .then(async data => {
+        if (data.length > 0) {
+          this.setState({
+            user: data[0],
+            isLoading: false
+          });
+        }
+      });
   }
 
   async getTopGifs() {
@@ -69,19 +90,20 @@ export class HomeScreen extends Component {
             userId: userId
           }
         ],
-        isLoading: false
+        isLoading: false,
+        isFirstLoad: false
       }));
     } else {
       this.setState({
         Gifs: allGifs,
-        isLoading: false
+        isLoading: false,
+        isFirstLoad: false
       });
     }
   }
 
   render() {
-    const { isLoading, topPicks, Gifs } = this.state;
-    <NavigationEvents onDidFocus={this.componentDidMount} />;
+    const { isLoading, topPicks, Gifs, isFirstLoad } = this.state;
     let topPicksSourceInput = [];
     let GifsSourceInput = [];
     if (this.state.topPicks.length > 0) {
@@ -105,6 +127,11 @@ export class HomeScreen extends Component {
 
     return (
       <View style={{ backgroundColor: "#050407", height: "100%" }}>
+        {isFirstLoad == false ? (
+          <NavigationEvents onDidFocus={this.getUserByMail} />
+        ) : (
+          <View></View>
+        )}
         {isLoading == true ? (
           <View style={[styles.container, styles.horizontal]}>
             <ActivityIndicator size="large" color="#fff" />
@@ -112,7 +139,7 @@ export class HomeScreen extends Component {
         ) : (
           <ScrollView>
             <View>
-              {topPicks ? (
+              {topPicks.length > 0 ? (
                 <View>
                   <Text style={styles.TopPicks}>Top Picks For You</Text>
                   <Slideshow
@@ -123,9 +150,12 @@ export class HomeScreen extends Component {
                   />
                 </View>
               ) : (
-                <Text>There is Top Picks Boards</Text>
+                <Text>
+                  We can see that you do not have a profile yet. {"\n"}
+                  We strongly recommend you to create one so our system will find the best boards that match you.
+                </Text>
               )}
-              {Gifs ? (
+              {Gifs.length > 0 ? (
                 <View>
                   <Text style={styles.TopPicks}>Top Gifs</Text>
                   <Slideshow

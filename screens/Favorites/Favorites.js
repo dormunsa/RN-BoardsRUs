@@ -6,22 +6,20 @@ import {
   ActivityIndicator,
   StyleSheet
 } from "react-native";
-import PropTypes from 'prop-types';
-import BoardsList from '../../components/BoardsList'
-import {NavigationEvents} from 'react-navigation';
+import PropTypes from "prop-types";
+import BoardsList from "../../components/BoardsList";
+import { NavigationEvents } from "react-navigation";
 
-
-
-export  class Favorites extends Component {
+export class Favorites extends Component {
   constructor(props) {
     super(props);
     this.loadFavorites = this.loadFavorites.bind(this);
     this.deleteFavorites = this.deleteFavorites.bind(this);
-    this.componentDidMount= this.componentDidMount.bind(this)
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.state = {
       isLoading: true,
       favorites: [],
-      isFirstLoad:true
+      isFirstLoad: true
     };
   }
 
@@ -32,30 +30,29 @@ export  class Favorites extends Component {
       color: "#fff",
       textAlign: "center",
       flex: 1,
-      fontFamily: 'Roboto'
+      fontFamily: "Roboto"
     },
     headerTintColor: "#fff",
     headerStyle: {
       height: 40,
-      backgroundColor: "#0f0821"
+      backgroundColor: "#0f0821",
+      fontFamily: "Roboto"
     }
   });
 
   componentDidMount() {
     this.loadFavorites();
   }
- 
+
   loadFavorites() {
-    console.log("loadFromFavorites")
     this.setState({
       favorites: [],
-      isFirstLoad:false,
-      isLoading:true
+      isFirstLoad: false,
+      isLoading: true
     });
     AsyncStorage.getAllKeys((err, keys) => {
       AsyncStorage.multiGet(keys, (err, stores) => {
-        console.log(stores)
-        if(stores.length > 0){
+        if (stores.length > 0) {
           stores.map((result, i, store) => {
             let item = JSON.parse(store[i][1]);
             this.addItemToFavorites(item);
@@ -65,76 +62,71 @@ export  class Favorites extends Component {
             isLoading: false
           });
         }
-       
       });
     });
   }
-  deleteFavorites(){
+  deleteFavorites() {}
 
-  }
-
-  addItemToFavorites(item){
+  addItemToFavorites(item) {
     this.setState(prevSate => ({
-      favorites: [
-        ...prevSate.favorites,item
-      ],
+      favorites: [...prevSate.favorites, item],
       isLoading: false
     }));
   }
 
   render() {
-    const {  isLoading, favorites  , isFirstLoad} = this.state;
-   
+    const { isLoading, favorites, isFirstLoad } = this.state;
+
     return (
-     
-      <View style = {{backgroundColor : "#050407" , height : "100%"}}>
-      {isFirstLoad == false ? (<NavigationEvents onDidFocus={this.loadFavorites} />):(<View></View>)} 
-      {isLoading == true ? (
-        <View style={[styles.container, styles.horizontal]}>
-          <ActivityIndicator size="large" color="#fff" />
-        </View>
-      ) : (
-        <View>
-          {favorites.length == 0 ? (
-            <Text style={styles.notFound}>There is no results</Text>
-          ) : (
-           
-            <BoardsList
-              boardsList = {this.state.favorites}
-              navigation = {this.props.navigation}
-              isFromFavorites = {true}
-            />
-          
-          )}
-        </View>
-      )}
-    </View>
-    )
+      <View style={{ backgroundColor: "#050407", height: "100%" }}>
+        {isFirstLoad == false ? (
+          <NavigationEvents onDidFocus={this.loadFavorites} />
+        ) : (
+          <View></View>
+        )}
+        {isLoading == true ? (
+          <View style={[styles.container, styles.horizontal]}>
+            <ActivityIndicator size="large" color="#fff" />
+          </View>
+        ) : (
+          <View>
+            {favorites.length == 0 ? (
+              <Text style={styles.notFound}>There is no results</Text>
+            ) : (
+              <BoardsList
+                boardsList={this.state.favorites}
+                navigation={this.props.navigation}
+                isFromFavorites={true}
+              />
+            )}
+          </View>
+        )}
+      </View>
+    );
   }
 }
 Favorites.propTypes = {
   screenProps: PropTypes.shape({
-    user: PropTypes.isRequired,
+    user: PropTypes.isRequired
   }).isRequired,
-  navigation: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired
 };
 const styles = StyleSheet.create({
   notFound: {
     marginTop: 300,
     fontSize: 25,
     textAlign: "center",
-    color: "#fff",
-    
+    color: "#fff"
   },
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     padding: 10
-  },
+  }
 });
 
 export default Favorites;

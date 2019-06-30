@@ -1,19 +1,11 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  
-} from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import SearchInput from "../../components/SearchInput";
 import BoardsList from "../../components/BoardsList";
-import PropTypes from 'prop-types';
-import {NavigationEvents} from 'react-navigation';
+import PropTypes from "prop-types";
+import { NavigationEvents } from "react-navigation";
 
-
-
-export  class Boards extends Component {
+export class Boards extends Component {
   constructor(props) {
     super(props);
     this.handleSearch = this.handleSearch.bind(this);
@@ -21,7 +13,7 @@ export  class Boards extends Component {
       isLoading: true,
       user: this.props.screenProps.user,
       boardsList: []
-    }
+    };
   }
   componentDidMount() {
     this.handleSearch("");
@@ -33,25 +25,25 @@ export  class Boards extends Component {
       color: "#fff",
       textAlign: "center",
       flex: 1,
-      fontFamily: 'Roboto'
+      fontFamily: "Roboto"
     },
     headerTintColor: "#fff",
     headerStyle: {
       height: 40,
-      backgroundColor: "#0f0821"
+      backgroundColor: "#0f0821",
+      fontFamily: "Roboto"
     }
   });
 
   handleSearch(query) {
-    if(query == ""){
-      this.getAllBoards()
+    if (query == "") {
+      this.getAllBoards();
     } else {
-      this.getSnowByName(query)
+      this.getSnowByName(query);
     }
   }
 
-   
- async getAllBoards(){
+  async getAllBoards() {
     const url = "https://boards-r-us-rn.herokuapp.com/getAllSnowboards";
     await fetch(`${url}`)
       .then(response => {
@@ -62,7 +54,6 @@ export  class Boards extends Component {
         }
       })
       .then(async data => {
-      
         if (data.length > 0) {
           this.setState({
             boardsList: data,
@@ -72,7 +63,7 @@ export  class Boards extends Component {
       });
   }
 
-  async getSnowByName(query){
+  async getSnowByName(query) {
     const url = "https://boards-r-us-rn.herokuapp.com/getSnowboardByName/";
     await fetch(`${url}${query}`)
       .then(response => {
@@ -83,7 +74,6 @@ export  class Boards extends Component {
         }
       })
       .then(async data => {
-     
         if (data.length > 0) {
           this.setState({
             boardsList: data,
@@ -98,12 +88,11 @@ export  class Boards extends Component {
       });
   }
 
-
   render() {
-    const {  isLoading, boardsList } = this.state;
-    <NavigationEvents onDidFocus={this.componentDidMount} />
+    const { isLoading, boardsList } = this.state;
+    <NavigationEvents onDidFocus={this.componentDidMount} />;
     return (
-      <View style = {{backgroundColor : "#050407" , height : "100%"}}>
+      <View style={{ backgroundColor: "#050407", height: "100%" }}>
         <SearchInput handleSearch={this.handleSearch} />
         {isLoading == true ? (
           <View style={[styles.container, styles.horizontal]}>
@@ -114,13 +103,11 @@ export  class Boards extends Component {
             {boardsList.length == 0 ? (
               <Text style={styles.notFound}>There is no results</Text>
             ) : (
-             
               <BoardsList
-                boardsList = {this.state.boardsList}
-                navigation = {this.props.navigation}
-                isFromFavorites = {false}
+                boardsList={this.state.boardsList}
+                navigation={this.props.navigation}
+                isFromFavorites={false}
               />
-            
             )}
           </View>
         )}
@@ -130,9 +117,9 @@ export  class Boards extends Component {
 }
 Boards.propTypes = {
   screenProps: PropTypes.shape({
-    user: PropTypes.isRequired,
+    user: PropTypes.isRequired
   }).isRequired,
-  navigation: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -140,19 +127,17 @@ const styles = StyleSheet.create({
     marginTop: 300,
     fontSize: 25,
     textAlign: "center",
-    color: "#fff",
-    
+    color: "#fff"
   },
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     padding: 10
-  },
+  }
 });
 
- 
 export default Boards;
