@@ -6,7 +6,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { Card } from "react-native-elements";
 import PropTypes from 'prop-types';
@@ -33,19 +33,18 @@ export default class BoardsList extends Component {
       />
     );
   }
-  
+ 
   renderListStylePic({ item }) {
     const { navigate } = this.props.navigation;
     return (
     <ScrollView>
       <TouchableOpacity
-        onPress={() => navigate("BoardDetails", { boardData: item })}
+        onPress={() => navigate("BoardDetails", { boardData: item , boardsList:this.props.boardsList , isFromFavorites:this.props.isFromFavorites  })}
       >
         <Card containerStyle={styles.cardStyle}>
           <View style={styles.listItemContainer}>
           <Text style = {styles.brandText}>Brand: {item.brand} {"\n"}<Text>Name: {item.name}</Text>
           </Text>
-       
             <Image
               source={{ uri: item.imageSource }}
               style={styles.listImageItem}
@@ -66,7 +65,9 @@ export default class BoardsList extends Component {
 
 BoardsList.propTypes = {
     navigation: PropTypes.object.isRequired,
-    boardsList: PropTypes.array
+    boardsList: PropTypes.array,
+    handleAddItemToFavorites: PropTypes.array,
+    isFromFavorites:PropTypes.bool,
   };
 
 const styles = StyleSheet.create({

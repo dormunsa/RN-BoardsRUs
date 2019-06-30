@@ -1,13 +1,19 @@
 import React, { Component } from "react";
-import { Text, View, ActivityIndicator , StyleSheet , ScrollView} from "react-native";
-import Slideshow from 'react-native-slideshow';
-import PropTypes from 'prop-types';
-
+import {
+  Text,
+  View,
+  ActivityIndicator,
+  StyleSheet,
+  ScrollView
+} from "react-native";
+import Slideshow from "react-native-slideshow";
+import PropTypes from "prop-types";
+import { NavigationEvents } from "react-navigation";
 
 export class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.screenProps.user);
+    console.log(this.props.screenProps);
     this.getTopGifs = this.getTopGifs.bind(this);
     this.addGifs = this.addGifs.bind(this);
     this.state = {
@@ -24,7 +30,7 @@ export class HomeScreen extends Component {
       color: "#fff",
       textAlign: "center",
       flex: 1,
-      fontFamily: 'Roboto'
+      fontFamily: "Roboto"
     },
     headerStyle: {
       height: 40,
@@ -35,7 +41,7 @@ export class HomeScreen extends Component {
   componentDidMount() {
     this.getTopGifs();
   }
- 
+
   async getTopGifs() {
     const url = "https://boards-r-us-rn.herokuapp.com/getTopGIFs";
     await fetch(`${url}`)
@@ -72,105 +78,96 @@ export class HomeScreen extends Component {
       });
     }
   }
-  
+
   render() {
     const { isLoading, topPicks, Gifs } = this.state;
-    let topPicksSourceInput = []
-    let GifsSourceInput = []
-    if(this.state.topPicks.length > 0){
-      this.state.topPicks.forEach((item) => {
-        let node  = {
-          url : item.imageSource,
+    <NavigationEvents onDidFocus={this.componentDidMount} />;
+    let topPicksSourceInput = [];
+    let GifsSourceInput = [];
+    if (this.state.topPicks.length > 0) {
+      this.state.topPicks.forEach(item => {
+        let node = {
+          url: item.imageSource,
           title: item.name,
-          caption :item.brand
+          caption: item.brand
         };
-        topPicksSourceInput.push(node)
-    })
+        topPicksSourceInput.push(node);
+      });
     }
-    if(this.state.Gifs){
-      this.state.Gifs.forEach((item) => {
-        let node  = {
-          url : item.fileSource,
+    if (this.state.Gifs) {
+      this.state.Gifs.forEach(item => {
+        let node = {
+          url: item.fileSource
         };
-        GifsSourceInput.push(node)
-    })
+        GifsSourceInput.push(node);
+      });
     }
-  
-   
+
     return (
-      <View style = {{backgroundColor : "#050407" , height : "100%"}}>
+      <View style={{ backgroundColor: "#050407", height: "100%" }}>
         {isLoading == true ? (
           <View style={[styles.container, styles.horizontal]}>
             <ActivityIndicator size="large" color="#fff" />
           </View>
-          
         ) : (
-         <ScrollView>
-          <View>
-            {topPicks ? (
-              <View >
-              <Text style = {styles.TopPicks}>Top Picks For You</Text>
-              <Slideshow 
-              dataSource={topPicksSourceInput}
-                height= {400}
-                overlay = {true}
-                containerStyle = {
-                  { marginTop:20}
-                }      
-                />
-              </View>
-            ) : (
-              <Text>There is Top Picks Boards</Text>
-            )}
-            {Gifs ? (
-              <View >
-              <Text style = {styles.TopPicks}>Top Gifs</Text>
-              <Slideshow 
-              dataSource={GifsSourceInput}
-                height= {400}
-                overlay = {true}
-                containerStyle = {
-                  { marginTop:20 , marginBottom : 10}
-                }      
-                />
-              </View>
-            ) : (
-              <Text>There is no Gifs</Text>
-            )}
-          </View>
-        </ScrollView>
+          <ScrollView>
+            <View>
+              {topPicks ? (
+                <View>
+                  <Text style={styles.TopPicks}>Top Picks For You</Text>
+                  <Slideshow
+                    dataSource={topPicksSourceInput}
+                    height={400}
+                    overlay={true}
+                    containerStyle={{ marginTop: 20 }}
+                  />
+                </View>
+              ) : (
+                <Text>There is Top Picks Boards</Text>
+              )}
+              {Gifs ? (
+                <View>
+                  <Text style={styles.TopPicks}>Top Gifs</Text>
+                  <Slideshow
+                    dataSource={GifsSourceInput}
+                    height={400}
+                    overlay={true}
+                    containerStyle={{ marginTop: 20, marginBottom: 10 }}
+                  />
+                </View>
+              ) : (
+                <Text>There is no Gifs</Text>
+              )}
+            </View>
+          </ScrollView>
         )}
       </View>
-      
     );
   }
 }
 HomeScreen.propTypes = {
   screenProps: PropTypes.shape({
-    user: PropTypes.isRequired,
-  }).isRequired,
+    user: PropTypes.isRequired
+  }).isRequired
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     padding: 10
   },
-  TopPicks : {
+  TopPicks: {
     fontSize: 24,
     color: "#fff",
     textAlign: "center",
-    marginTop:10,
-    fontFamily: 'Roboto'
+    marginTop: 10,
+    fontFamily: "Roboto"
   }
-})
+});
 
-
-
-
-export default HomeScreen
+export default HomeScreen;

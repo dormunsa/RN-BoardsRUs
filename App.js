@@ -1,22 +1,23 @@
-import React from 'react';
-import { AppRegistry} from 'react-native';
-import MainNavigation from './components/Navigator'
-import { View, ActivityIndicator , StyleSheet } from "react-native";
+import React from "react";
+import { AppRegistry } from "react-native";
+import MainNavigation from "./components/Navigator";
+import { View } from "react-native";
+import Login from "./screens/Login";
 
 export default class App extends React.Component {
-
   constructor(props) {
     super(props);
     this.getUserByMail = this.getUserByMail.bind(this);
     this.state = {
       isLoading: true,
-      user : {}
+      user: {}
     };
   }
-  componentDidMount() {
-    this.getUserByMail("dmun1009@gmail.com");
-  }
-  async getUserByMail(userMail) {
+  
+  async getUserByMail(userMail, userName) {
+    console.log("insideGetUser");
+    console.log(userMail);
+    console.log(userName);
     const url = "https://boards-r-us-rn.herokuapp.com/getUserByEmail/";
     await fetch(`${url}${userMail}`)
       .then(response => {
@@ -27,7 +28,10 @@ export default class App extends React.Component {
         }
       })
       .then(async data => {
-        if (data.length > 0) {
+        console.log(data);
+        if (data.length == 0) {
+          this.addUser(userMail, userName);
+        } else {
           this.setState({
             user: data[0],
             isLoading: false
@@ -35,39 +39,47 @@ export default class App extends React.Component {
         }
       });
   }
+
+  async addUser(name, email) {
+    var newUser = {
+      name: "",
+      email: ""
+    };
+    newUser.name = name;
+    newUser.email = email;
+    const url = "https://boards-r-us-rn.herokuapp.com/addNewUser";
+    await fetch(`${url}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newUser)
+    })
+      .then(res => res.json())
+      .then(json => {
+        if (json.name != undefined) {
+          this.setState({
+            user: json,
+            isLoading: false
+          });
+        } else {
+          alert(`No update was made.`);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
   render() {
-    const { isLoading, user } = this.state;
     return (
-      <View style = {{backgroundColor : "#050407" , height : "100%"}}>
-      {isLoading == true ? (
-        <View style={[styles.container, styles.horizontal]}>
-          <ActivityIndicator size="large" color="#fff" />
-        </View>
-        
-      ) : (
-        <MainNavigation screenProps={{ user: user}} />
-      )}
-    </View>
-     
+      <View style={{ backgroundColor: "#050407", height: "100%" }}>
+        {this.state.isLoading == true ? (
+          <Login getUserByMail={this.getUserByMail} />
+        ) : (
+          <MainNavigation screenProps={{ user: this.state.user }} />
+        )}
+      </View>
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10
-  },
-  TopPicks : {
-    fontSize: 24,
-    color: "#fff",
-    textAlign: "center",
-    marginTop:10,
-    fontFamily: 'Roboto'
-  }
-})
+
 AppRegistry.registerComponent("BoardsRUs", () => App);

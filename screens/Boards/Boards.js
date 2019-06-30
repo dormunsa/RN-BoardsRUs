@@ -3,11 +3,14 @@ import {
   StyleSheet,
   Text,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  
 } from "react-native";
 import SearchInput from "../../components/SearchInput";
 import BoardsList from "../../components/BoardsList";
 import PropTypes from 'prop-types';
+import {NavigationEvents} from 'react-navigation';
+
 
 
 export  class Boards extends Component {
@@ -47,6 +50,7 @@ export  class Boards extends Component {
     }
   }
 
+   
  async getAllBoards(){
     const url = "https://boards-r-us-rn.herokuapp.com/getAllSnowboards";
     await fetch(`${url}`)
@@ -58,7 +62,7 @@ export  class Boards extends Component {
         }
       })
       .then(async data => {
-        console.log(data)
+      
         if (data.length > 0) {
           this.setState({
             boardsList: data,
@@ -79,7 +83,7 @@ export  class Boards extends Component {
         }
       })
       .then(async data => {
-        console.log(data)
+     
         if (data.length > 0) {
           this.setState({
             boardsList: data,
@@ -97,6 +101,7 @@ export  class Boards extends Component {
 
   render() {
     const {  isLoading, boardsList } = this.state;
+    <NavigationEvents onDidFocus={this.componentDidMount} />
     return (
       <View style = {{backgroundColor : "#050407" , height : "100%"}}>
         <SearchInput handleSearch={this.handleSearch} />
@@ -111,8 +116,9 @@ export  class Boards extends Component {
             ) : (
              
               <BoardsList
-                boardsList={this.state.boardsList}
-                navigation={this.props.navigation}
+                boardsList = {this.state.boardsList}
+                navigation = {this.props.navigation}
+                isFromFavorites = {false}
               />
             
             )}

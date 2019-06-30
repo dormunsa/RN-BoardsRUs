@@ -3,6 +3,7 @@ import {
   Text,
   View,
 } from "react-native";
+import {NavigationEvents} from 'react-navigation';
 
 
 export  class Profile extends Component {
@@ -26,6 +27,7 @@ export  class Profile extends Component {
 
 
   render() {
+    <NavigationEvents onDidFocus={this.componentDidMount} />
     return (
     <View >
         <Text > Profile</Text>
