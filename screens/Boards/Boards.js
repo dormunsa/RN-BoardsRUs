@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator,ScrollView } from "react-native";
 import SearchInput from "../../components/SearchInput";
 import BoardsList from "../../components/BoardsList";
 import PropTypes from "prop-types";
@@ -93,6 +93,7 @@ export class Boards extends Component {
     <NavigationEvents onDidFocus={this.componentDidMount} />;
     return (
       <View style={{ backgroundColor: "#050407", height: "100%" }}>
+      <ScrollView>
         <SearchInput handleSearch={this.handleSearch} />
         {isLoading == true ? (
           <View style={[styles.container, styles.horizontal]}>
@@ -111,6 +112,7 @@ export class Boards extends Component {
             )}
           </View>
         )}
+      </ScrollView>
       </View>
     );
   }

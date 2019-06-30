@@ -63,7 +63,7 @@ export class BoardDetails extends Component {
     return isInFavoritesIndicator;
   };
 
-  renderFooter({ title }) {
+  renderFooter() {
     return (
       <View style={styles.footer}>
         <TouchableOpacity
@@ -74,14 +74,13 @@ export class BoardDetails extends Component {
             );
           }}
         >
-          <Text style={styles.footerText}> ♥ </Text>
-          <Text style={styles.footerText}>Add {title} to Favotires</Text>
+          <Text style={styles.footerText}>Add to Favotires</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
-  renderFavoritesFooter({ title }) {
+  renderFavoritesFooter() {
     return (
       <View style={styles.footer}>
         <TouchableOpacity
@@ -92,8 +91,7 @@ export class BoardDetails extends Component {
             );
           }}
         >
-          <Text style={styles.footerText}> ♥ </Text>
-          <Text style={styles.footerText}>Delete {title} From Favotires</Text>
+          <Text style={styles.footerText}>Delete From Favotires</Text>
         </TouchableOpacity>
       </View>
     );
@@ -156,14 +154,17 @@ const styles = StyleSheet.create({
     paddingVertical: 5
   },
   footerButton: {
+    backgroundColor: "rgba(38,38,38,0.7)",
     flexDirection: "row",
     marginLeft: 15,
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#fff",
-    borderRadius: 20,
+    borderRadius: 10,
     paddingLeft: 5,
-    paddingRight: 5
+    paddingRight: 5,
+    paddingTop: 5,
+    paddingBottom: 5
   },
   footerText: {
     fontSize: 16,

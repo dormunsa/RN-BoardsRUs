@@ -37,7 +37,7 @@ export default class App extends React.Component {
       });
   }
 
-  async addUser(name, email) {
+  async addUser(email, name) {
     var newUser = {
       name: "",
       email: ""

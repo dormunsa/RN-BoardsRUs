@@ -17,7 +17,7 @@ export class HomeScreen extends Component {
     this.addGifs = this.addGifs.bind(this);
     this.getUserByMail = this.getUserByMail.bind(this);
     this.state = {
-      isFirstLoad: true,
+      isFirstLoad: false,
       isLoading: true,
       topPicks: this.props.screenProps.user.topPicks,
       Gifs: []
@@ -44,6 +44,7 @@ export class HomeScreen extends Component {
     this.getTopGifs();
   }
   async getUserByMail() {
+    console.log("load again")
     const url = "https://boards-r-us-rn.herokuapp.com/getUserByEmail/";
     await fetch(`${url}${this.props.screenProps.user.email}`)
       .then(response => {
@@ -57,6 +58,7 @@ export class HomeScreen extends Component {
         if (data.length > 0) {
           this.setState({
             user: data[0],
+            topPicks:data[0].topPicks,
             isLoading: false
           });
         }
@@ -64,6 +66,9 @@ export class HomeScreen extends Component {
   }
 
   async getTopGifs() {
+    this.setState({
+      isFirstLoad: false
+    });
     const url = "https://boards-r-us-rn.herokuapp.com/getTopGIFs";
     await fetch(`${url}`)
       .then(response => {
@@ -150,9 +155,10 @@ export class HomeScreen extends Component {
                   />
                 </View>
               ) : (
-                <Text>
-                  We can see that you do not have a profile yet. {"\n"}
-                  We strongly recommend you to create one so our system will find the best boards that match you.
+                <Text style={styles.noPofile}>
+                We can see that you do not have a profile yet. 
+                We strongly recommend you to create one so our system 
+                will find the best boards that match you.
                 </Text>
               )}
               {Gifs.length > 0 ? (
@@ -193,6 +199,13 @@ const styles = StyleSheet.create({
   },
   TopPicks: {
     fontSize: 24,
+    color: "#fff",
+    textAlign: "center",
+    marginTop: 10,
+    fontFamily: "Roboto"
+  },
+  noPofile: {
+    fontSize: 18,
     color: "#fff",
     textAlign: "center",
     marginTop: 10,
