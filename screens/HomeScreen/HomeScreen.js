@@ -4,11 +4,13 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from "react-native";
 import Slideshow from "react-native-slideshow";
 import PropTypes from "prop-types";
 import { NavigationEvents } from "react-navigation";
+import { Button } from "react-native-elements";
 
 export class HomeScreen extends Component {
   constructor(props) {
@@ -108,7 +110,7 @@ export class HomeScreen extends Component {
   }
 
   render() {
-    const { isLoading, topPicks, Gifs, isFirstLoad } = this.state;
+    const { isLoading, topPicks, isFirstLoad } = this.state;
     let topPicksSourceInput = [];
     let GifsSourceInput = [];
     if (this.state.topPicks.length > 0) {
@@ -129,6 +131,7 @@ export class HomeScreen extends Component {
         GifsSourceInput.push(node);
       });
     }
+    const { navigate } = this.props.navigation;
 
     return (
       <View style={{ backgroundColor: "#050407", height: "100%" }}>
@@ -155,13 +158,30 @@ export class HomeScreen extends Component {
                   />
                 </View>
               ) : (
-                <Text style={styles.noPofile}>
-                We can see that you do not have a profile yet. 
-                We strongly recommend you to create one so our system 
-                will find the best boards that match you.
-                </Text>
+                <View>
+            <Text style={styles.noPofile}>
+                  We can see that you do not have a profile yet. 
+                  Please go to profile page for create Profile
+            </Text>
+            <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: 10
+                  }}
+                >
+                <TouchableOpacity>
+                  <Button
+                    buttonStyle={styles.button}
+                    title="Go to Profile"
+                    onPress={() => navigate("Profile")}
+                  />
+                  </TouchableOpacity>
+                </View>
+            </View>
               )}
-              {Gifs.length > 0 ? (
+              {topPicks.length > 0 ? (
                 <View>
                   <Text style={styles.TopPicks}>Top Gifs</Text>
                   <Slideshow
@@ -184,7 +204,8 @@ export class HomeScreen extends Component {
 HomeScreen.propTypes = {
   screenProps: PropTypes.shape({
     user: PropTypes.isRequired
-  }).isRequired
+  }).isRequired,
+  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -209,8 +230,17 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     marginTop: 10,
-    fontFamily: "Roboto"
-  }
+    fontFamily: "Roboto",
+    paddingRight:15,
+    paddingLeft: 15
+  },
+  button: {
+    borderRadius: 10,
+    height: 40,
+    width: 150,
+    marginTop: 20,
+    justifyContent: "center"
+  },
 });
 
 export default HomeScreen;

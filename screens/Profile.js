@@ -1,22 +1,25 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, View, StyleSheet, ScrollView , TouchableOpacity} from "react-native";
 import { Button } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import PropTypes from "prop-types";
 import EditProfile from "../components/editProfile";
+import AddGif from '../components/addGifs'
 
 export class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isFirstLoad: true,
-      editMode: false,
+      profileEditMode: false,
       isLoading: true,
+      addGifMode:false,
       topPicks: this.props.screenProps.user.topPicks,
       user: this.props.screenProps.user
     };
     this.getUserByMail = this.getUserByMail.bind(this);
     this.toggleEditMode = this.toggleEditMode.bind(this);
+    this.toggleEditGifMode= this.toggleEditGifMode.bind(this)
   }
   static navigationOptions = () => ({
     title: "Profile",
@@ -39,14 +42,22 @@ export class Profile extends Component {
   }
   toggleEditMode() {
     this.setState({
-      editMode: !this.state.editMode
+      profileEditMode: !this.state.editMode
+    });
+    this.getUserByMail()
+  }
+  toggleEditGifMode() {
+    console.log("inside toggle gif mode")
+    this.setState({
+      addGifMode: !this.state.addGifMode
     });
     this.getUserByMail()
   }
   async getUserByMail() {
     this.setState({
       isFirstLoad: false,
-      editMode: false
+      profileEditMode: false,
+      addGifMode: false,
     });
     const url = "https://boards-r-us-rn.herokuapp.com/getUserByEmail/";
     await fetch(`${url}${this.props.screenProps.user.email}`)
@@ -67,7 +78,7 @@ export class Profile extends Component {
   }
 
   render() {
-    const { user, isFirstLoad, editMode } = this.state;
+    const { user, isFirstLoad, profileEditMode , addGifMode } = this.state;
     return (
       <View style={{ backgroundColor: "#050407", height: "100%" }}>
         <ScrollView>
@@ -77,10 +88,10 @@ export class Profile extends Component {
             <View></View>
           )}
           <Text style={styles.TopPicks}> Hi {user.name}</Text>
-          {user.topPicks.length > 0 || editMode==true ? (
+          {user.topPicks.length > 0 || profileEditMode==true ? (
             <View>
               <Text style={styles.TopPicks}> Welcome to Profile Portal</Text>
-              {editMode == false ? (
+              {profileEditMode == false ? (
                 <View
                   style={{
                     flex: 1,
@@ -89,27 +100,53 @@ export class Profile extends Component {
                     marginBottom: 10
                   }}
                 >
+                <TouchableOpacity>
                   <Button
                     buttonStyle={styles.button}
                     title="Edit Profile"
-                    onPress={() => this.setState({ editMode: true })}
+                    onPress={() => this.setState({ profileEditMode: true })}
                   />
+                  </TouchableOpacity>
                 </View>
               ) : (
                 <EditProfile
                   toggleEditMode={this.toggleEditMode}
-                  editMode={editMode}
+                  editMode={profileEditMode}
+                  user={user}
+                />
+              )}
+              {addGifMode== false ? (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: 10
+                  }}
+                >
+                 <Text style={styles.TopPicks}> Have an Awesome Gif? {"\n"} Share it with us! </Text>
+                <TouchableOpacity>
+                  <Button
+                    buttonStyle={styles.button}
+                    title="Add Gif"
+                    onPress={() => this.setState({ addGifMode: true })}
+                  />
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <AddGif
+                  toggleEditMode={this.toggleEditGifMode}
+                  editMode={addGifMode}
                   user={user}
                 />
               )}
             </View>
           ) : (
           <View>
-            {editMode == false ? (
+            {profileEditMode == false && addGifMode== false ? (
               <View>
             <Text style={styles.noPofile}>
-                  We can see that you do not have a profile yet. 
-                  We strongly recommend you to create one so our system 
+                  We strongly recommend you to create profile so our system 
                   will find the best boards that match you.
             </Text>
             <View
@@ -120,11 +157,13 @@ export class Profile extends Component {
                     marginBottom: 10
                   }}
                 >
+                <TouchableOpacity>
                   <Button
                     buttonStyle={styles.button}
                     title="Create Profile"
-                    onPress={() => this.setState({ editMode: true })}
+                    onPress={() => this.setState({ profileEditMode: true })}
                   />
+                  </TouchableOpacity>
                 </View>
             </View>
             ) : (
@@ -172,8 +211,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
     textAlign: "center",
-    marginTop: 10,
-    fontFamily: "Roboto"
+    marginTop: 20,
+    fontFamily: "Roboto",
+    paddingRight:15,
+    paddingLeft: 15
   }
 });
 Profile.propTypes = {

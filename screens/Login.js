@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator , TouchableOpacity } from "react-native";
 import { Button, Card } from "react-native-elements";
 import * as Expo from "expo";
 import propTypes from "prop-types";
@@ -37,11 +37,13 @@ export default class Login extends Component {
       <View>
         <Card containerStyle={styles.cardStyle}>
           <Text style={styles.header}>Welcome to Boards R Us</Text>
+          <TouchableOpacity>
           <Button
             buttonStyle={styles.button}
             title="Sign in with Google"
             onPress={() => props.signIn()}
           />
+          </TouchableOpacity>
         </Card>
       </View>
     );

@@ -91,7 +91,7 @@ export class Favorites extends Component {
         ) : (
           <View>
             {favorites.length == 0 ? (
-              <Text style={styles.notFound}>There is no results</Text>
+              <Text style={styles.notFound}>You have no favorites boards</Text>
             ) : (
               <BoardsList
                 boardsList={this.state.favorites}

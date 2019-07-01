@@ -6,7 +6,8 @@ import {
   Picker,
   ScrollView,
   StyleSheet,
-  Alert
+  Alert,
+  TouchableOpacity
 } from "react-native";
 import PropTypes from 'prop-types';
 import { Button } from "react-native-elements";
@@ -14,23 +15,6 @@ import { Button } from "react-native-elements";
 export default class EditProfile extends Component {
   constructor(props) {
     super(props);
-
-    if( props.user.hasProfile){
-        this.state = {
-            User: props.user,
-            hasProfile: props.user.hasProfile,
-            name: props.user.name,
-            id: props.user.id,
-            address: props.user.address,
-            gender: props.user.gender,
-            level: `${props.user.level}`,
-            ridingStyle: props.user.ridingStyle,
-            weight:`${props.user.bodyMeasures.weight}` ,
-            height: `${props.user.bodyMeasures.height}`,
-            shoeSize: `${props.user.bodyMeasures.shoeSize}`,
-            dislikeList: props.user.dislikeList,
-        }
-    } else {
         this.state = {
             User: props.user,
             hasProfile: props.user.hasProfile,
@@ -44,12 +28,27 @@ export default class EditProfile extends Component {
             height: "",
             shoeSize: "",
             dislikeList: props.user.dislikeList,
-        }
     }
     this.updateUser = this.updateUser.bind(this)
+    this.initState = this.initState.bind(this)
   }
  
-  
+  componentDidMount() {
+    if( this.props.user.hasProfile){
+    this.initState();
+    }
+  }
+  initState(){
+        this.setState({
+            address: this.props.user.address,
+            gender: this.props.user.gender,
+            level: `${this.props.user.level}`,
+            ridingStyle: this.props.user.ridingStyle,
+            weight:`${this.props.user.bodyMeasures.weight}` ,
+            height: `${this.props.user.bodyMeasures.height}`,
+            shoeSize: `${this.props.user.bodyMeasures.shoeSize}`,
+        })
+  }
   updateUser() {
     console.log("inside update")
     var self = this
@@ -122,24 +121,34 @@ export default class EditProfile extends Component {
             style={styles.textInput}
             onChangeText={(text) => this.setState({address:text})}
             value={this.state.address}
+            placeholder = "Address:"
+            placeholderTextColor = "#fff"
+
         />
         <Text style={styles.label}> Shoe Size:</Text>
         <TextInput
             style={styles.textInput}
             onChangeText={(text) => this.setState({shoeSize:text})}
             value={this.state.shoeSize}
+            placeholder = "Shoe Size:"
+            placeholderTextColor = "#fff"
+          
         />
         <Text style={styles.label}>Height</Text>
         <TextInput
             style={styles.textInput}
             onChangeText={(text) => this.setState({height:text})}
             value={this.state.height}
+            placeholder = "Height:"
+            placeholderTextColor = "#fff"
         />
         <Text style={styles.label}>Weight</Text>
         <TextInput
             style={styles.textInput}
             onChangeText={(text) => this.setState({weight:text})}
-            value={this.state.weight}
+            value={this.state.Weight}
+            placeholder = "Weight:"
+            placeholderTextColor = "#fff"
         />
         <Text style={styles.label}>Riding Style</Text>
         <Picker
@@ -177,11 +186,13 @@ export default class EditProfile extends Component {
         </Picker>
         </View>
         <View style = {{flex:1, justifyContent:"center",alignItems: 'center', marginBottom:10}} >
+        <TouchableOpacity>
         <Button
             buttonStyle={styles.button}
             title="Submit"
             onPress={this.updateUser}
         />
+        </TouchableOpacity>
         </View>
         </ScrollView>
         </View>
