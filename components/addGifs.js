@@ -22,7 +22,7 @@ export default class AddGif extends Component {
     this.addGifs = this.addGifs.bind(this);
   }
 
-  addGifs() {
+  async addGifs() {
     var newGif = {
       userID: "",
       date: 0,
@@ -35,7 +35,7 @@ export default class AddGif extends Component {
 
     const url = "https://boards-r-us-rn.herokuapp.com/addNewGIF";
 
-    fetch(`${url}`, {
+    await fetch(`${url}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
