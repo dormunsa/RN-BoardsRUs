@@ -1,10 +1,16 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, ScrollView , TouchableOpacity} from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
 import { Button } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import PropTypes from "prop-types";
 import EditProfile from "../components/editProfile";
-import AddGif from '../components/addGifs'
+import AddGif from "../components/addGifs";
 
 export class Profile extends Component {
   constructor(props) {
@@ -13,13 +19,13 @@ export class Profile extends Component {
       isFirstLoad: true,
       profileEditMode: false,
       isLoading: true,
-      addGifMode:false,
+      addGifMode: false,
       topPicks: this.props.screenProps.user.topPicks,
       user: this.props.screenProps.user
     };
     this.getUserByMail = this.getUserByMail.bind(this);
     this.toggleEditMode = this.toggleEditMode.bind(this);
-    this.toggleEditGifMode= this.toggleEditGifMode.bind(this)
+    this.toggleEditGifMode = this.toggleEditGifMode.bind(this);
   }
   static navigationOptions = () => ({
     title: "Profile",
@@ -44,20 +50,19 @@ export class Profile extends Component {
     this.setState({
       profileEditMode: !this.state.editMode
     });
-    this.getUserByMail()
+    this.getUserByMail();
   }
   toggleEditGifMode() {
-    console.log("inside toggle gif mode")
     this.setState({
       addGifMode: !this.state.addGifMode
     });
-    this.getUserByMail()
+    this.getUserByMail();
   }
   async getUserByMail() {
     this.setState({
       isFirstLoad: false,
       profileEditMode: false,
-      addGifMode: false,
+      addGifMode: false
     });
     const url = "https://boards-r-us-rn.herokuapp.com/getUserByEmail/";
     await fetch(`${url}${this.props.screenProps.user.email}`)
@@ -71,14 +76,14 @@ export class Profile extends Component {
       .then(async data => {
         if (data.length > 0) {
           this.setState({
-            user: data[0],
+            user: data[0]
           });
         }
       });
   }
 
   render() {
-    const { user, isFirstLoad, profileEditMode , addGifMode } = this.state;
+    const { user, isFirstLoad, profileEditMode, addGifMode } = this.state;
     return (
       <View style={{ backgroundColor: "#050407", height: "100%" }}>
         <ScrollView>
@@ -88,7 +93,7 @@ export class Profile extends Component {
             <View></View>
           )}
           <Text style={styles.TopPicks}> Hi {user.name}</Text>
-          {user.topPicks.length > 0 || profileEditMode==true ? (
+          {user.topPicks.length > 0 || profileEditMode == true ? (
             <View>
               <Text style={styles.TopPicks}> Welcome to Profile Portal</Text>
               {profileEditMode == false ? (
@@ -100,12 +105,12 @@ export class Profile extends Component {
                     marginBottom: 10
                   }}
                 >
-                <TouchableOpacity>
-                  <Button
-                    buttonStyle={styles.button}
-                    title="Edit Profile"
-                    onPress={() => this.setState({ profileEditMode: true })}
-                  />
+                  <TouchableOpacity>
+                    <Button
+                      buttonStyle={styles.button}
+                      title="Edit Profile"
+                      onPress={() => this.setState({ profileEditMode: true })}
+                    />
                   </TouchableOpacity>
                 </View>
               ) : (
@@ -115,7 +120,7 @@ export class Profile extends Component {
                   user={user}
                 />
               )}
-              {addGifMode== false ? (
+              {addGifMode == false ? (
                 <View
                   style={{
                     flex: 1,
@@ -124,13 +129,16 @@ export class Profile extends Component {
                     marginBottom: 10
                   }}
                 >
-                 <Text style={styles.TopPicks}> Have an Awesome Gif? {"\n"} Share it with us! </Text>
-                <TouchableOpacity>
-                  <Button
-                    buttonStyle={styles.button}
-                    title="Add Gif"
-                    onPress={() => this.setState({ addGifMode: true })}
-                  />
+                  <Text style={styles.TopPicks}>
+                    {" "}
+                    Have an Awesome Gif? {"\n"} Share it with us!{" "}
+                  </Text>
+                  <TouchableOpacity>
+                    <Button
+                      buttonStyle={styles.button}
+                      title="Add Gif"
+                      onPress={() => this.setState({ addGifMode: true })}
+                    />
                   </TouchableOpacity>
                 </View>
               ) : (
@@ -142,34 +150,34 @@ export class Profile extends Component {
               )}
             </View>
           ) : (
-          <View>
-            {profileEditMode == false && addGifMode== false ? (
-              <View>
-            <Text style={styles.noPofile}>
-                  We strongly recommend you to create profile so our system 
-                  will find the best boards that match you.
-            </Text>
-            <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginBottom: 10
-                  }}
-                >
-                <TouchableOpacity>
-                  <Button
-                    buttonStyle={styles.button}
-                    title="Create Profile"
-                    onPress={() => this.setState({ profileEditMode: true })}
-                  />
-                  </TouchableOpacity>
+            <View>
+              {profileEditMode == false && addGifMode == false ? (
+                <View>
+                  <Text style={styles.noPofile}>
+                    We strongly recommend you to create profile so our system
+                    will find the best boards that match you.
+                  </Text>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginBottom: 10
+                    }}
+                  >
+                    <TouchableOpacity>
+                      <Button
+                        buttonStyle={styles.button}
+                        title="Create Profile"
+                        onPress={() => this.setState({ profileEditMode: true })}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
+              ) : (
+                <View></View>
+              )}
             </View>
-            ) : (
-              <View></View>
-            )} 
-          </View>
           )}
         </ScrollView>
       </View>
@@ -213,7 +221,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 20,
     fontFamily: "Roboto",
-    paddingRight:15,
+    paddingRight: 15,
     paddingLeft: 15
   }
 });

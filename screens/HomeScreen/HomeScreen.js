@@ -46,7 +46,6 @@ export class HomeScreen extends Component {
     this.getTopGifs();
   }
   async getUserByMail() {
-    console.log("load again")
     const url = "https://boards-r-us-rn.herokuapp.com/getUserByEmail/";
     await fetch(`${url}${this.props.screenProps.user.email}`)
       .then(response => {
@@ -60,7 +59,7 @@ export class HomeScreen extends Component {
         if (data.length > 0) {
           this.setState({
             user: data[0],
-            topPicks:data[0].topPicks,
+            topPicks: data[0].topPicks,
             isLoading: false
           });
         }
@@ -159,27 +158,27 @@ export class HomeScreen extends Component {
                 </View>
               ) : (
                 <View>
-            <Text style={styles.noPofile}>
-                  We can see that you do not have a profile yet. 
-                  Please go to profile page for create Profile
-            </Text>
-            <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginBottom: 10
-                  }}
-                >
-                <TouchableOpacity>
-                  <Button
-                    buttonStyle={styles.button}
-                    title="Go to Profile"
-                    onPress={() => navigate("Profile")}
-                  />
-                  </TouchableOpacity>
+                  <Text style={styles.noPofile}>
+                    We can see that you do not have a profile yet. Please go to
+                    profile page for create Profile
+                  </Text>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginBottom: 10
+                    }}
+                  >
+                    <TouchableOpacity>
+                      <Button
+                        buttonStyle={styles.button}
+                        title="Go to Profile"
+                        onPress={() => navigate("Profile")}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-            </View>
               )}
               {topPicks.length > 0 ? (
                 <View>
@@ -231,7 +230,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 10,
     fontFamily: "Roboto",
-    paddingRight:15,
+    paddingRight: 15,
     paddingLeft: 15
   },
   button: {
@@ -240,7 +239,7 @@ const styles = StyleSheet.create({
     width: 150,
     marginTop: 20,
     justifyContent: "center"
-  },
+  }
 });
 
 export default HomeScreen;

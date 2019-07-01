@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, ActivityIndicator,ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  ScrollView
+} from "react-native";
 import SearchInput from "../../components/SearchInput";
 import BoardsList from "../../components/BoardsList";
 import PropTypes from "prop-types";
@@ -93,26 +99,26 @@ export class Boards extends Component {
     <NavigationEvents onDidFocus={this.componentDidMount} />;
     return (
       <View style={{ backgroundColor: "#050407", height: "100%" }}>
-      <ScrollView>
-        <SearchInput handleSearch={this.handleSearch} />
-        {isLoading == true ? (
-          <View style={[styles.container, styles.horizontal]}>
-            <ActivityIndicator size="large" color="#fff" />
-          </View>
-        ) : (
-          <View>
-            {boardsList.length == 0 ? (
-              <Text style={styles.notFound}>There is no results</Text>
-            ) : (
-              <BoardsList
-                boardsList={this.state.boardsList}
-                navigation={this.props.navigation}
-                isFromFavorites={false}
-              />
-            )}
-          </View>
-        )}
-      </ScrollView>
+        <ScrollView>
+          <SearchInput handleSearch={this.handleSearch} />
+          {isLoading == true ? (
+            <View style={[styles.container, styles.horizontal]}>
+              <ActivityIndicator size="large" color="#fff" />
+            </View>
+          ) : (
+            <View>
+              {boardsList.length == 0 ? (
+                <Text style={styles.notFound}>There is no results</Text>
+              ) : (
+                <BoardsList
+                  boardsList={this.state.boardsList}
+                  navigation={this.props.navigation}
+                  isFromFavorites={false}
+                />
+              )}
+            </View>
+          )}
+        </ScrollView>
       </View>
     );
   }

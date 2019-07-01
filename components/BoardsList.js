@@ -6,10 +6,10 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  ScrollView,
+  ScrollView
 } from "react-native";
 import { Card } from "react-native-elements";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export default class BoardsList extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export default class BoardsList extends Component {
   _keyExtractor(item) {
     return item.id.toString();
   }
- 
+
   renderListStyle() {
     return (
       <FlatList
@@ -33,28 +33,34 @@ export default class BoardsList extends Component {
       />
     );
   }
- 
+
   renderListStylePic({ item }) {
     const { navigate } = this.props.navigation;
     return (
-    <ScrollView>
-      <TouchableOpacity
-        onPress={() => navigate("BoardDetails", { boardData: item , boardsList:this.props.boardsList , isFromFavorites:this.props.isFromFavorites  })}
-      >
-        <Card containerStyle={styles.cardStyle}>
-          <View style={styles.listItemContainer}>
-          <Text style = {styles.brandText}>Brand: {item.brand} {"\n"}<Text>Name: {item.name}</Text>
-          </Text>
-            <Image
-              source={{ uri: item.imageSource }}
-              style={styles.listImageItem}
-            />
-          
-           
-          </View>
-        </Card>
-      </TouchableOpacity>
-    </ScrollView>
+      <ScrollView>
+        <TouchableOpacity
+          onPress={() =>
+            navigate("BoardDetails", {
+              boardData: item,
+              boardsList: this.props.boardsList,
+              isFromFavorites: this.props.isFromFavorites
+            })
+          }
+        >
+          <Card containerStyle={styles.cardStyle}>
+            <View style={styles.listItemContainer}>
+              <Text style={styles.brandText}>
+                Brand: {item.brand} {"\n"}
+                <Text>Name: {item.name}</Text>
+              </Text>
+              <Image
+                source={{ uri: item.imageSource }}
+                style={styles.listImageItem}
+              />
+            </View>
+          </Card>
+        </TouchableOpacity>
+      </ScrollView>
     );
   }
 
@@ -64,11 +70,11 @@ export default class BoardsList extends Component {
 }
 
 BoardsList.propTypes = {
-    navigation: PropTypes.object.isRequired,
-    boardsList: PropTypes.array,
-    handleAddItemToFavorites: PropTypes.array,
-    isFromFavorites:PropTypes.bool,
-  };
+  navigation: PropTypes.object.isRequired,
+  boardsList: PropTypes.array,
+  handleAddItemToFavorites: PropTypes.array,
+  isFromFavorites: PropTypes.bool
+};
 
 const styles = StyleSheet.create({
   image: {
@@ -78,30 +84,30 @@ const styles = StyleSheet.create({
   listImageItem: {
     height: 150,
     width: 150,
-    justifyContent: "flex-start",
+    justifyContent: "flex-start"
   },
   listItemContainer: {
-    flexDirection: "row",
+    flexDirection: "row"
   },
   backGround: {
     backgroundColor: "#000"
   },
-  cardStyle:{
-    borderRadius:20,
-    backgroundColor: "rgba(38,38,38,0.7)",
+  cardStyle: {
+    borderRadius: 20,
+    backgroundColor: "rgba(38,38,38,0.7)"
   },
-  brandText:{
+  brandText: {
     fontSize: 20,
     color: "#fff",
     textAlign: "right",
-    fontFamily: 'Roboto',
-    marginTop:25,
-    position:"absolute",
-    right:1
+    fontFamily: "Roboto",
+    marginTop: 25,
+    position: "absolute",
+    right: 1
   },
-  nameText : {
+  nameText: {
     fontSize: 18,
     color: "#fff",
-    fontFamily: 'Roboto'
+    fontFamily: "Roboto"
   }
 });

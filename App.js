@@ -15,7 +15,6 @@ export default class App extends React.Component {
   }
 
   async getUserByMail(userMail, userName) {
-
     const url = "https://boards-r-us-rn.herokuapp.com/getUserByEmail/";
     await fetch(`${url}${userMail}`)
       .then(response => {

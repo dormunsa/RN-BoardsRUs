@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { SearchBar } from "react-native-elements";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export default class SearchInput extends Component {
   constructor(props) {
@@ -28,5 +28,5 @@ export default class SearchInput extends Component {
   }
 }
 SearchInput.propTypes = {
-    handleSearch: PropTypes.func.isRequired
-  };
+  handleSearch: PropTypes.func.isRequired
+};
